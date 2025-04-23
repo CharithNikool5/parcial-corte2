@@ -216,3 +216,115 @@ const mesaSelector: React.FC<MesaSelectorProps> = ({
 
 export default mesaSelector;
 ```
+# Historia de Usuario - HU1: Componente de fecha y hora
+
+## Descripción 
+Esta HU nos muestra como se utilizaron los 3 componentes en una pantalla principal.
+
+## imagenes 
+![](imagenes/image5.png)
+![pagina principal](/Imagenes/image-6.png)
+
+## Codigo 
+```tsx
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
+
+import ExploreContainer from '../components/ExploreContainer';
+import Formulario from '../components/Formulario';
+import DateTime from '../components/fechaHora';
+import MesaSelector from '../components/mesaSelector';
+
+import { useState } from 'react';
+import MyButton from '../components/MyButton';
+
+const mesasMock = [
+  { id: 1, nombre: 'Mesa 1', capacidad: 4, disponible: true },
+  { id: 2, nombre: 'Mesa 2', capacidad: 2, disponible: false },
+  { id: 3, nombre: 'Mesa 3', capacidad: 6, disponible: true },
+];
+
+const Home: React.FC = () => {
+  const [nombre, setNombre] = useState('');
+  const [Contacto, setContacto] = useState('');
+  const [Identificacion, setIdentificacion] = useState('');
+  const [direccion, setDireccion] = useState('');
+
+  const [date, setDate] = useState<string>('');
+  const [time, setTime] = useState<string>('');
+
+  const [mesaSeleccionada, setMesaSeleccionada] = useState<number>();
+
+  function enviarFormulario() {
+    if (
+      nombre.trim() === '' ||
+      Contacto.trim() === '' ||
+      Identificacion.trim() === '' ||
+      !date ||
+      !time ||
+      !mesaSeleccionada
+    ) {
+      alert('Todos los campos son obligatorios');
+    } else {
+      alert('Reserva enviada con éxito');
+      console.log('Datos enviados:', {
+        nombre,
+        Contacto,
+        Identificacion,
+        fecha: date,
+        hora: time,
+        mesaId: mesaSeleccionada,
+      });
+    }
+  }
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>GESTION</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent fullscreen>
+        <div className="contenedor ion-padding">
+
+          {/* Cliente */}
+          <Formulario label="Nombre" value={nombre} onChange={setNombre} />
+          <Formulario label="Contacto" value={Contacto} onChange={setContacto} />
+          <Formulario label="Identificación" value={Identificacion} onChange={setIdentificacion} />
+          <Formulario label="Direccion" value={direccion} onChange={setDireccion} />
+
+          {/* Fecha y hora */}
+          <DateTime
+            selectedDate={date}
+            selectedTime={time}
+            onDateChange={setDate}
+            onTimeChange={setTime}
+          />
+
+          {/* Selección de mesa */}
+          <MesaSelector
+            mesas={mesasMock}
+            selectedMesaId={mesaSeleccionada}
+            onSelectMesa={setMesaSeleccionada}
+          />
+
+          {/* Botón de enviar */}
+          <MyButton text="Enviar Reserva" onClick={enviarFormulario} />
+
+          <ExploreContainer />
+        </div>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default Home;
+```
