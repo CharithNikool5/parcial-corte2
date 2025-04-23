@@ -145,4 +145,74 @@ export default Formulario;
 ```
 
 
+# Historia de Usuario - HU3: Componente para seleccionar la mesa
 
+## Descrpción 
+
+Este componente permite capturar de manera sencilla y eficiente la información relacionada con la selección de mesas por parte de un cliente que desea realizar una reserva. Está diseñado para ser reutilizable en distintas secciones de la aplicación, facilitando su integración en formularios o flujos donde se requiera elegir una mesa disponible.
+
+## Imagenes
+
+![Mesas](imagenes/image4.png)
+
+## Estructura
+```tsx
+import React from 'react';
+import {
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRadioGroup,
+  IonRadio,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle
+} from '@ionic/react';
+
+interface Mesa {
+  id: number;
+  nombre: string;
+  capacidad: number;
+  disponible: boolean;
+}
+
+interface MesaSelectorProps {
+  mesas: Mesa[];
+  selectedMesaId?: number;
+  onSelectMesa: (id: number) => void;
+}
+
+const mesaSelector: React.FC<MesaSelectorProps> = ({
+  mesas,
+  selectedMesaId,
+  onSelectMesa
+}) => {
+  return (
+    <IonCard className="card-container">
+      <IonCardHeader>
+        <IonCardTitle>Selecciona una Mesa</IonCardTitle>
+      </IonCardHeader>
+
+      <IonList>
+        <IonRadioGroup
+          value={selectedMesaId?.toString()}
+          onIonChange={(e) => onSelectMesa(parseInt(e.detail.value as string))}
+        >
+          {mesas
+            .filter((mesa) => mesa.disponible)
+            .map((mesa) => (
+              <IonItem key={mesa.id}>
+                <IonLabel>
+                  {mesa.nombre} (Capacidad: {mesa.capacidad})
+                </IonLabel>
+                <IonRadio slot="end" value={mesa.id.toString()} />
+              </IonItem>
+            ))}
+        </IonRadioGroup>
+      </IonList>
+    </IonCard>
+  );
+};
+
+export default mesaSelector;
+```
