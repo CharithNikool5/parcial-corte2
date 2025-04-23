@@ -4,8 +4,8 @@
 
 El objetivo de esta historia de usuario es crear un componente reutilizable que permite seleccionar la fecha y hora para poder realizar reservas. 
 ## Imagenes
-![Fecha](image.png)
-![Hora](image-1.png)
+![Fecha](imagenes/image.png)
+![Hora](imagenes/image1.png)
 
 ## Estructura
 
@@ -89,3 +89,60 @@ const DateTime: React.FC<DateTimePickerProps> = ({
 };
 
 export default DateTime;
+```
+
+
+## Historia de Usuario - HU2: Ingreso de los datos de el cliente
+
+## Descripción 
+Este componente permite capturar de manera sencilla y eficiente los datos personales de un cliente que desea realizar una reserva. Está diseñado para ser reutilizable en diferentes partes de la aplicación, facilitando su integración en múltiples formularios o flujos relacionados con reservas.
+
+## imagenes
+
+![Cliente](imagenes/image3.png)
+
+## Estructura
+
+```tsx
+
+// src/components/MyInput.tsx
+import { IonInput, IonLabel, IonItem } from '@ionic/react';
+
+type TextFieldTypes =
+  | 'date'
+  | 'email'
+  | 'number'
+  | 'password'
+  | 'search'
+  | 'tel'
+  | 'text'
+  | 'time'
+  | 'url';
+
+interface MyInputProps {
+  label: string;
+  type?: TextFieldTypes;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const Formulario: React.FC<MyInputProps> = ({ label, type = 'text', value, onChange }) => {
+  return (
+    <IonItem>
+      <IonLabel position="stacked">{label}</IonLabel>
+      <IonInput
+        type={type}
+        value={value}
+        onIonChange={(e) => onChange(e.detail.value!)}
+        clearInput
+        style={{ color: "#000" }}
+      />
+    </IonItem>
+  );
+};
+
+export default Formulario;
+```
+
+
+
